@@ -24,7 +24,7 @@ const routes = [
         component: () => import("@/views/Tab2.vue"),
       },
       {
-        path: "tab3",
+        path: "tab3/:date/:trainNumber",
         component: () => import("@/views/Tab3.vue"),
       },
     ],

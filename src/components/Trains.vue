@@ -35,44 +35,52 @@
         <template
           v-if="
             findDeparture(train.timeTableRows) &&
-            trainCategories.includes(train.trainCategory)
+              trainCategories.includes(train.trainCategory)
           "
         >
-          <span class="train-type">{{
-            train.commuterLineID
-              ? train.commuterLineID
-              : train.trainType + train.trainNumber
-          }}</span>
-          <span class="train-destination" v-if="train.timeTableRows.length">
-            {{
-              findStationName(
-                train.timeTableRows[train.timeTableRows.length - 1]
-                  .stationShortCode
-              )
-            }}
-          </span>
-          <span class="train-track">
-            {{ findDeparture(train.timeTableRows).commercialTrack }}
-          </span>
-          <span class="train-schedule">
-            {{ formatDate(findDeparture(train.timeTableRows).scheduledTime) }}
-          </span>
-          <span class="train-schedule">
-            {{ formatTime(findDeparture(train.timeTableRows).scheduledTime) }}
-          </span>
-          <span
-            class="train-live-schedule"
-            v-if="findDeparture(train.timeTableRows).liveEstimateTime"
+          <router-link
+            :to="'/tabs/tab3/' + train.departureDate + '/' + train.trainNumber"
           >
-            {{
-              "~" +
-              formatTime(findDeparture(train.timeTableRows).liveEstimateTime)
-            }}
-          </span>
-          <Compositions
-            :date="train.departureDate"
-            :trainNumber="train.trainNumber"
-          ></Compositions>
+            <span class="train-type">{{
+              train.commuterLineID
+                ? train.commuterLineID
+                : train.trainType + train.trainNumber
+            }}</span>
+            <span class="train-destination" v-if="train.timeTableRows.length">
+              {{
+                findStationName(
+                  train.timeTableRows[train.timeTableRows.length - 1]
+                    .stationShortCode
+                )
+              }}
+            </span>
+            <span class="train-track">
+              {{ findDeparture(train.timeTableRows).commercialTrack }}
+            </span>
+            <span class="train-schedule">
+              {{ formatDate(findDeparture(train.timeTableRows).scheduledTime) }}
+            </span>
+            <span class="train-schedule">
+              {{ formatTime(findDeparture(train.timeTableRows).scheduledTime) }}
+            </span>
+            <span
+              class="train-live-schedule"
+              v-if="
+                findDeparture(train.timeTableRows).liveEstimateTime &&
+                  formatTime(
+                    findDeparture(train.timeTableRows).liveEstimateTime
+                  ) !=
+                    formatTime(findDeparture(train.timeTableRows).scheduledTime)
+              "
+            >
+              {{
+                "~" +
+                  formatTime(
+                    findDeparture(train.timeTableRows).liveEstimateTime
+                  )
+              }}
+            </span>
+          </router-link>
         </template>
       </div>
     </template>
@@ -82,11 +90,7 @@
 <script>
 import getTrainsByStation from "../services/getTrainsByStation";
 import getStations from "../services/getStations";
-import Compositions from "./Compositions";
 export default {
-  components: {
-    Compositions,
-  },
   data() {
     return {
       departureStation: "",

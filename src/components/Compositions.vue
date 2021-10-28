@@ -31,6 +31,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.date, this.trainNumber);
     this.findComposition(this.date, this.trainNumber);
   },
 };

@@ -1,14 +1,16 @@
 <template>
   <div>
     <ion-searchbar
+      id="station-search"
       placeholder="Hae asemaa"
       show-cancel-button="always"
+      v-model="searchWord"
       @ionFocus="showStationList = true"
       @ionCancel="showStationList = false"
       @ionChange="updateSearch($event)"
     >
     </ion-searchbar>
-    <ion-list v-if="showStationList == true">
+    <ion-list v-if="showStationList">
       <template v-for="(station, i) in stations">
         <ion-item
           button
@@ -16,6 +18,7 @@
             departureStation = station.stationShortCode;
             refreshTrains();
             showStationList = false;
+            searchWord = findStationName(departureStation);
           "
           v-bind:key="'station' + i"
           :value="station.stationShortCode"
@@ -34,7 +37,7 @@
       </ion-segment-button>
     </ion-segment>
     <span class="train-category-filter">
-      <ion-chip @click="updateFilter('Commuter')">
+      <ion-chip ref="filter-option-commuter" @click="updateFilter('Commuter')">
         <input
           type="checkbox"
           id="commuter"
@@ -44,7 +47,7 @@
         />
         <ion-label>Lähijunat</ion-label>
       </ion-chip>
-      <ion-chip @click="updateFilter('Long-distance')">
+      <ion-chip ref="filter-option-long-distance" @click="updateFilter('Long-distance')">
         <input
           type="checkbox"
           id="long-distance"
@@ -67,7 +70,11 @@
             v-if="
               findDeparture(train.timeTableRows) &&
                 trainCategories.includes(train.trainCategory) &&
-                findDeparture(train.timeTableRows).scheduledTime >= 
+                (
+                  findDeparture(train.timeTableRows).liveEstimateTime
+                  ?? findDeparture(train.timeTableRows).scheduledTime
+                ) 
+                >= 
                 (new Date().toISOString())
             "
           >
@@ -76,18 +83,22 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
-              <span class="train-type">{{
-                train.commuterLineID
-                  ? train.commuterLineID
-                  : train.trainType + train.trainNumber
-              }}</span>
+              <span class="train-type">
+                {{ formatTrainType(train) }}
+              </span>
               <span class="train-destination" v-if="train.timeTableRows.length">
-                {{
-                  findStationName(
-                    train.timeTableRows[train.timeTableRows.length - 1]
-                      .stationShortCode
-                  )
-                }}
+                <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
+                  <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
+                  <span v-else>Lentoasema</span>
+                </span>
+                <span v-else>
+                  {{
+                    findStationName(
+                      train.timeTableRows[train.timeTableRows.length - 1]
+                        .stationShortCode
+                    )
+                  }}
+                </span>
               </span>
               <span class="train-track">
                 {{ findDeparture(train.timeTableRows).commercialTrack }}
@@ -142,18 +153,22 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
-              <span class="train-type">{{
-                train.commuterLineID
-                  ? train.commuterLineID
-                  : train.trainType + train.trainNumber
-              }}</span>
+              <span class="train-type">
+                {{ formatTrainType(train) }}
+              </span>
               <span class="train-destination" v-if="train.timeTableRows.length">
-                {{
-                  findStationName(
-                    train.timeTableRows[train.timeTableRows.length - 1]
-                      .stationShortCode
-                  )
-                }}
+                <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
+                  <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
+                  <span v-else>Lentoasema</span>
+                </span>
+                <span v-else>
+                  {{
+                    findStationName(
+                      train.timeTableRows[train.timeTableRows.length - 1]
+                        .stationShortCode
+                    )
+                  }}
+                </span>
               </span>
               <span class="train-track">
                 {{ findArrival(train.timeTableRows).commercialTrack }}
@@ -202,7 +217,7 @@ import {
   IonSearchbar,
   IonList,
   IonItem,
-  IonChip
+  IonChip,
 } from "@ionic/vue";
 export default {
   components: {
@@ -212,7 +227,7 @@ export default {
     IonSearchbar,
     IonList,
     IonItem,
-    IonChip
+    IonChip,
   },
   data() {
     return {
@@ -224,6 +239,7 @@ export default {
       trainCategories: ["Commuter", "Long-distance"],
       showTables: ["departures"],
       showStationList: false,
+      searchWord: ""
     };
   },
   methods: {
@@ -272,6 +288,11 @@ export default {
       });
       return formatted;
     },
+    formatTrainType(train) {
+      return train.commuterLineID
+      ? train.commuterLineID
+      : train.trainType + train.trainNumber
+    },
     findStationName(stationShort) {
       let stationName = this.stations.find(
         (el) => el.stationShortCode == stationShort
@@ -297,7 +318,23 @@ export default {
       this.trainCategories.includes(value)
       ? this.trainCategories = this.trainCategories.filter(e => e !== value)
       : this.trainCategories.push(value)
-    }
+    },
+    stationPassed(timetable, stationShort) {
+      let passed;
+      timetable.findIndex(
+        (el) =>
+          el.stationShortCode == stationShort
+      ) 
+      <= 
+      timetable.findIndex(
+        (el) =>
+          el.stationShortCode == this.departureStation
+      )
+      ? passed = true
+      : passed = false
+      return passed;
+    },
+
   },
   mounted() {
     getStations().then((data) => (this.stations = data));

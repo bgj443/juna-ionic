@@ -62,7 +62,7 @@
       <!--Lähtevät-->
 
       <div v-if="showTables.includes('departures')">
-        <ion-grid  >
+        <ion-grid fixed >
           <ion-row>
             <ion-col size="4"> 
                 <div>Juna</div>
@@ -171,7 +171,7 @@
       <!--Saapuvat-->
       
       <div v-if="showTables.includes('arrivals')">
-        <ion-grid  >
+        <ion-grid fixed >
           <ion-row>
             <ion-col size="4"> 
                 <div>Juna</div>

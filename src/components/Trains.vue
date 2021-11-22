@@ -62,7 +62,7 @@
       <!--Lähtevät-->
       <div v-if="showTables.includes('departures')">
         <div
-          class="departure-table"
+          class="departure-table table-row"
           v-for="(train, i) in trains"
           v-bind:key="i"
         >
@@ -141,7 +141,11 @@
       </div>
       <!--Saapuvat-->
       <div v-if="showTables.includes('arrivals')">
-        <div class="arrival-table" v-for="(train, i) in trains" v-bind:key="i">
+        <div
+          class="arrival-table table-row"
+          v-for="(train, i) in trains"
+          v-bind:key="i"
+        >
           <template
             v-if="
               findArrival(train.timeTableRows) &&
@@ -348,15 +352,15 @@ a {
 }
 .train-type {
   display: inline-block;
-  border-radius: 50%;
+  border-radius: 50px;
   min-width: 30px;
   height: 30px;
   background: var(--ion-color-dark);
   color: var(--ion-color-light);
   font-size: 16px;
-  line-height: 30px;
+  line-height: 20px;
   text-align: center;
-  padding: 6px;
+  padding: 6px 8px;
 }
 .train-destination {
   color: var(--ion-color-dark);

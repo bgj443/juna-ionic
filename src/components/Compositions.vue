@@ -8,7 +8,7 @@
         class="wagon-info"
       >
         <!-- <div>Vaunutyyppi: {{ wagon.wagonType }}</div> -->
-        <div class="train-style">{{ wagon.location }}</div>
+        <div class="train-style">{{ wagon.salesNumber }}</div>
         <div v-if="wagon.catering">
           <span
             ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">

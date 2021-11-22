@@ -62,6 +62,22 @@
       <!--Lähtevät-->
 
       <div v-if="showTables.includes('departures')">
+        <ion-grid  >
+          <ion-row>
+            <ion-col size="4"> 
+                <div>Juna</div>
+            </ion-col>
+            <ion-col size="9"> 
+                <div>Määränpää</div>
+            </ion-col>
+            <ion-col size="3"> 
+                <div>Raide</div>
+            </ion-col>
+            <ion-col size="8"> 
+                <div>Lähtöaika</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
         <div
           class="departure-table"
           v-for="(train, i) in trains"
@@ -84,9 +100,9 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
+
             <ion-grid fixed >
-            <ion-row>
-              
+            <ion-row> 
             <ion-col size="4"> 
               <span class="train-type">
                 {{ formatTrainType(train) }}
@@ -153,7 +169,24 @@
         </div>
       </div>
       <!--Saapuvat-->
+      
       <div v-if="showTables.includes('arrivals')">
+        <ion-grid  >
+          <ion-row>
+            <ion-col size="4"> 
+                <div>Juna</div>
+            </ion-col>
+            <ion-col size="9"> 
+                <div>Määränpää</div>
+            </ion-col>
+            <ion-col size="3"> 
+                <div>Raide</div>
+            </ion-col>
+            <ion-col size="8"> 
+                <div>Saapumisaika</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
         <div class="arrival-table" v-for="(train, i) in trains" v-bind:key="i">
           <template
             v-if="
@@ -388,16 +421,22 @@ a {
 .train-live-schedule {
   color: var(--ion-color-danger);
 }
+
 ion-col{
  
   --ion-grid-columns:24;
-  color: var(--ion-color-dark);
+  color: var(--ion-color-light);
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  background-color: rgb(147, 240, 155);
+  background-color: rgb(28, 44, 88);
+  
 }
 ion-chip > ion-label {
   padding: 5px;
 }
+ion-grid{
+  padding: 1px;
+}
+
 </style>

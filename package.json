@@ -19,9 +19,7 @@
     "@ionic/vue-router": "^5.4.0",
     "core-js": "^3.6.5",
     "vue": "^3.2.1",
-    "vue-router": "^4.0.0-0"
-  },
-  "devDependencies": {
+    "vue-router": "^4.0.0-0",
     "@capacitor/cli": "3.2.4",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
@@ -34,6 +32,8 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "vue-jest": "^5.0.0-0"
+  },
+  "devDependencies": {
   },
   "description": "An Ionic project"
 }

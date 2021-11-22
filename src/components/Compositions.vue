@@ -1,14 +1,14 @@
 <template>
   <template
-    v-if="composition.journeySections && composition.journeySections.length">
-    <div class="flex-container">
+    v-if="composition.journeySections && composition.journeySections.length"
+    ><div class="flex-container">
       <div
         v-for="(wagon, i) in composition.journeySections[0].wagons"
         :key="i"
         class="wagon-info"
       >
         <!-- <div>Vaunutyyppi: {{ wagon.wagonType }}</div> -->
-        <div class="train-style">{{ wagon.salesNumber }}</div>
+        <div class="train-style">{{ wagon.location }}</div>
         <div v-if="wagon.catering">
           <span
             ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -145,6 +145,12 @@ export default {
       getComposition(date, trainNumber).then(
         (data) => (this.composition = data)
       );
+    },
+  },
+  //watches value trainNumber for changes
+  watch: {
+    trainNumber: function(newval) {
+      this.findComposition(this.date, newval);
     },
   },
   mounted() {

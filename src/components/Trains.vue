@@ -1,14 +1,16 @@
 <template>
   <div>
     <ion-searchbar
+      id="station-search"
       placeholder="Hae asemaa"
       show-cancel-button="always"
+      v-model="searchWord"
       @ionFocus="showStationList = true"
       @ionCancel="showStationList = false"
       @ionChange="updateSearch($event)"
     >
     </ion-searchbar>
-    <ion-list v-if="showStationList == true">
+    <ion-list v-if="showStationList">
       <template v-for="(station, i) in stations">
         <ion-item
           button
@@ -16,6 +18,7 @@
             departureStation = station.stationShortCode;
             refreshTrains();
             showStationList = false;
+            searchWord = findStationName(departureStation);
           "
           v-bind:key="'station' + i"
           :value="station.stationShortCode"
@@ -34,22 +37,26 @@
       </ion-segment-button>
     </ion-segment>
     <span class="train-category-filter">
-      <label for="commuter">Lähijunat</label>
-      <input
-        type="checkbox"
-        id="commuter"
-        value="Commuter"
-        v-model="trainCategories"
-        @change="refreshTrains"
-      />
-      <label for="commuter">Kaukojunat</label>
-      <input
-        type="checkbox"
-        id="long-distance"
-        value="Long-distance"
-        v-model="trainCategories"
-        @change="refreshTrains"
-      />
+      <ion-chip ref="filter-option-commuter" @click="updateFilter('Commuter')">
+        <input
+          type="checkbox"
+          id="commuter"
+          value="Commuter"
+          v-model="trainCategories"
+          @change="refreshTrains"
+        />
+        <ion-label>Lähijunat</ion-label>
+      </ion-chip>
+      <ion-chip ref="filter-option-long-distance" @click="updateFilter('Long-distance')">
+        <input
+          type="checkbox"
+          id="long-distance"
+          value="Long-distance"
+          v-model="trainCategories"
+          @change="refreshTrains"
+        />
+        <ion-label>Kaukojunat</ion-label>
+      </ion-chip>
     </span>
     <template v-if="trains.length">
       <!--Lähtevät-->
@@ -63,7 +70,13 @@
           <template
             v-if="
               findDeparture(train.timeTableRows) &&
-                trainCategories.includes(train.trainCategory)
+                trainCategories.includes(train.trainCategory) &&
+                (
+                  findDeparture(train.timeTableRows).liveEstimateTime
+                  ?? findDeparture(train.timeTableRows).scheduledTime
+                ) 
+                >= 
+                (new Date().toISOString())
             "
           >
             <router-link
@@ -74,25 +87,28 @@
             <ion-grid fixed >
             <ion-row>
               
-            <ion-col size="4" class="short">
-              <span class="train-type">{{
-                train.commuterLineID
-                  ? train.commuterLineID
-                  : train.trainType + train.trainNumber
-              }}</span>
-               </ion-col>
-
-              <ion-col size="9" class="long">
-                <span class="train-destination" v-if="train.timeTableRows.length">
-                {{
-                  findStationName(
-                    train.timeTableRows[train.timeTableRows.length - 1]
-                      .stationShortCode
-                  )
-                }}
+            <ion-col size="4"> 
+              <span class="train-type">
+                {{ formatTrainType(train) }}
+              </span>
+              </ion-col>
+              <ion-col size="9"> 
+              <span class="train-destination" v-if="train.timeTableRows.length">
+                <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
+                  <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
+                  <span v-else>Lentoasema</span>
                 </span>
-               </ion-col>
-              <ion-col size="3" class="short"> 
+                <span v-else>
+                  {{
+                    findStationName(
+                      train.timeTableRows[train.timeTableRows.length - 1]
+                        .stationShortCode
+                    )
+                  }}
+                </span>
+              </span>
+              </ion-col>
+              <ion-col size="3"> 
               <span class="train-track">
                 {{ findDeparture(train.timeTableRows).commercialTrack }}
               </span>
@@ -103,18 +119,17 @@
                   formatDate(findDeparture(train.timeTableRows).scheduledTime)
                 }}
               </span> -->
-              <ion-col size="8" class="long">
+              <ion-col size="8">
               <span class="train-schedule" v-if="train.cancelled == false">
-
                 {{
                   formatTime(findDeparture(train.timeTableRows).scheduledTime)
                 }}
-                </span>
+              </span>
               <span class="train-live-schedule" v-else>
-                {{'Peruttu'}}
-                </span>
-            
-                <span class="train-live-schedule"
+                {{ "Peruttu" }}
+              </span>
+              <span
+                class="train-live-schedule"
                 v-if="
                   findDeparture(train.timeTableRows).liveEstimateTime &&
                     formatTime(
@@ -151,40 +166,41 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
-            <ion-grid>
+            <ion-grid fixed >
             <ion-row>
-              <ion-col size="4" class="short">
-             <span class="train-type">{{
-                train.commuterLineID
-                  ? train.commuterLineID
-                  : train.trainType + train.trainNumber
-              }}</span>
-              </ion-col>
-
-              <ion-col size="9" class="long"> 
-              <span class="train-destination" v-if="train.timeTableRows.length">
-                {{
-                  findStationName(
-                    train.timeTableRows[train.timeTableRows.length -1]
-                      .stationShortCode
-                  )
-                }}
+              <ion-col size="4"> 
+              <span class="train-type">
+                {{ formatTrainType(train) }}
               </span>
               </ion-col>
-              <ion-col size="3" class="short"> 
+              <ion-col size="9"> 
+              <span class="train-destination" v-if="train.timeTableRows.length">
+                <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
+                  <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
+                  <span v-else>Lentoasema</span>
+                </span>
+                <span v-else>
+                  {{
+                    findStationName(
+                      train.timeTableRows[train.timeTableRows.length - 1]
+                        .stationShortCode
+                    )
+                  }}
+                </span>
+              </span>
+              </ion-col>
+              <ion-col size="3"> 
               <span class="train-track">
                 {{ findArrival(train.timeTableRows).commercialTrack }}
               </span>
               </ion-col>
 
-              <ion-col size="8" class="long">
+              <ion-col size="8">
               <span class="train-schedule" v-if="train.cancelled == false">
-                {{
-                  formatTime(findArrival(train.timeTableRows).scheduledTime)
-                }}
+                {{ formatTime(findArrival(train.timeTableRows).scheduledTime) }}
               </span>
               <span class="train-live-schedule" v-else>
-                {{'Peruttu'}}
+                {{ "Peruttu" }}
               </span>
 
               <span
@@ -194,9 +210,7 @@
                     formatTime(
                       findArrival(train.timeTableRows).liveEstimateTime
                     ) !=
-                      formatTime(
-                        findArrival(train.timeTableRows).scheduledTime
-                      )
+                      formatTime(findArrival(train.timeTableRows).scheduledTime)
                 "
               >
                 {{
@@ -229,9 +243,7 @@ import {
   IonSearchbar,
   IonList,
   IonItem,
-  IonCol, 
-  IonGrid, 
-  IonRow,
+  IonChip,
 } from "@ionic/vue";
 export default {
   components: {
@@ -241,9 +253,7 @@ export default {
     IonSearchbar,
     IonList,
     IonItem,
-    IonCol, 
-    IonGrid, 
-    IonRow,
+    IonChip,
   },
   data() {
     return {
@@ -255,6 +265,7 @@ export default {
       trainCategories: ["Commuter", "Long-distance"],
       showTables: ["departures"],
       showStationList: false,
+      searchWord: ""
     };
   },
   methods: {
@@ -303,6 +314,11 @@ export default {
       });
       return formatted;
     },
+    formatTrainType(train) {
+      return train.commuterLineID
+      ? train.commuterLineID
+      : train.trainType + train.trainNumber
+    },
     findStationName(stationShort) {
       let stationName = this.stations.find(
         (el) => el.stationShortCode == stationShort
@@ -324,6 +340,27 @@ export default {
         });
       });
     },
+    updateFilter(value) {
+      this.trainCategories.includes(value)
+      ? this.trainCategories = this.trainCategories.filter(e => e !== value)
+      : this.trainCategories.push(value)
+    },
+    stationPassed(timetable, stationShort) {
+      let passed;
+      timetable.findIndex(
+        (el) =>
+          el.stationShortCode == stationShort
+      ) 
+      <= 
+      timetable.findIndex(
+        (el) =>
+          el.stationShortCode == this.departureStation
+      )
+      ? passed = true
+      : passed = false
+      return passed;
+    },
+
   },
   mounted() {
     getStations().then((data) => (this.stations = data));
@@ -350,10 +387,7 @@ a {
 
 .train-live-schedule {
   color: var(--ion-color-danger);
-
 }
-
-
 ion-col{
  
   --ion-grid-columns:24;
@@ -361,8 +395,9 @@ ion-col{
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  background-color: rgb(161, 230, 213);
+  background-color: rgb(147, 240, 155);
 }
-
-
+ion-chip > ion-label {
+  padding: 5px;
+}
 </style>

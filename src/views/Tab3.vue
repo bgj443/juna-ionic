@@ -13,6 +13,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <Compositions
+          class="element"
           :date="$route.params.date"
           :trainNumber="$route.params.trainNumber"
         ></Compositions>

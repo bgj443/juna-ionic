@@ -149,6 +149,13 @@ export default {
       );
     },
   },
+
+  //watches value trainNumber for changes
+  watch: {
+    trainNumber: function(newval) {
+      this.findComposition(this.date, newval);
+    },
+  },
   mounted() {
     console.log(this.date, this.trainNumber);
     this.findComposition(this.date, this.trainNumber);

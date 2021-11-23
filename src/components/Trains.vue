@@ -32,7 +32,7 @@
       <ion-segment-button value="departures">
         <ion-label>Lähtevät</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="arrivals">
+      <ion-segment-button value="arrivals" >
         <ion-label>Saapuvat</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -60,7 +60,24 @@
     </span>
     <template v-if="trains.length">
       <!--Lähtevät-->
+
       <div v-if="showTables.includes('departures')">
+        <ion-grid fixed >
+          <ion-row>
+            <ion-col size="4"> 
+                <div>Juna</div>
+            </ion-col>
+            <ion-col size="9"> 
+                <div>Määränpää</div>
+            </ion-col>
+            <ion-col size="3"> 
+                <div>Raide</div>
+            </ion-col>
+            <ion-col size="8"> 
+                <div>Lähtöaika</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
         <div
           class="departure-table table-row"
           v-for="(train, i) in trains"
@@ -83,9 +100,15 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
+
+            <ion-grid fixed >
+            <ion-row> 
+            <ion-col size="4"> 
               <span class="train-type">
                 {{ formatTrainType(train) }}
               </span>
+              </ion-col>
+              <ion-col size="9"> 
               <span class="train-destination" v-if="train.timeTableRows.length">
                 <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
                   <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
@@ -100,14 +123,19 @@
                   }}
                 </span>
               </span>
+              </ion-col>
+              <ion-col size="3"> 
               <span class="train-track">
                 {{ findDeparture(train.timeTableRows).commercialTrack }}
               </span>
-              <span class="train-schedule">
+              </ion-col>
+              <!-- <ion-col size="2">
+               <span class="train-schedule">
                 {{
                   formatDate(findDeparture(train.timeTableRows).scheduledTime)
                 }}
-              </span>
+              </span> -->
+              <ion-col size="8">
               <span class="train-schedule" v-if="train.cancelled == false">
                 {{
                   formatTime(findDeparture(train.timeTableRows).scheduledTime)
@@ -124,28 +152,42 @@
                       findDeparture(train.timeTableRows).liveEstimateTime
                     ) !=
                       formatTime(
-                        findDeparture(train.timeTableRows).scheduledTime
-                      )
-                "
-              >
-                {{
-                  "~" +
+                        findDeparture(train.timeTableRows).scheduledTime)">
+                  {{
+                  "  ~" +
                     formatTime(
                       findDeparture(train.timeTableRows).liveEstimateTime
                     )
-                }}
-              </span>
+                  }}
+                  </span>
+                </ion-col>
+            </ion-row>
+              </ion-grid>
+
             </router-link>
           </template>
         </div>
       </div>
       <!--Saapuvat-->
+      
       <div v-if="showTables.includes('arrivals')">
-        <div
-          class="arrival-table table-row"
-          v-for="(train, i) in trains"
-          v-bind:key="i"
-        >
+        <ion-grid fixed >
+          <ion-row>
+            <ion-col size="4"> 
+                <div>Juna</div>
+            </ion-col>
+            <ion-col size="9"> 
+                <div>Määränpää</div>
+            </ion-col>
+            <ion-col size="3"> 
+                <div>Raide</div>
+            </ion-col>
+            <ion-col size="8"> 
+                <div>Saapumisaika</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div class="arrival-table" v-for="(train, i) in trains" v-bind:key="i">
           <template
             v-if="
               findArrival(train.timeTableRows) &&
@@ -157,9 +199,14 @@
                 '/tabs/tab3/' + train.departureDate + '/' + train.trainNumber
               "
             >
+            <ion-grid fixed >
+            <ion-row>
+              <ion-col size="4"> 
               <span class="train-type">
                 {{ formatTrainType(train) }}
               </span>
+              </ion-col>
+              <ion-col size="9"> 
               <span class="train-destination" v-if="train.timeTableRows.length">
                 <span v-if="train.commuterLineID == 'P' || train.commuterLineID == 'I'">
                   <span v-if="stationPassed(train.timeTableRows, 'LEN')">Helsinki</span>
@@ -174,18 +221,21 @@
                   }}
                 </span>
               </span>
+              </ion-col>
+              <ion-col size="3"> 
               <span class="train-track">
                 {{ findArrival(train.timeTableRows).commercialTrack }}
               </span>
-              <span class="train-schedule">
-                {{ formatDate(findArrival(train.timeTableRows).scheduledTime) }}
-              </span>
+              </ion-col>
+
+              <ion-col size="8">
               <span class="train-schedule" v-if="train.cancelled == false">
                 {{ formatTime(findArrival(train.timeTableRows).scheduledTime) }}
               </span>
               <span class="train-live-schedule" v-else>
                 {{ "Peruttu" }}
               </span>
+
               <span
                 class="train-live-schedule"
                 v-if="
@@ -197,12 +247,17 @@
                 "
               >
                 {{
-                  "~" +
+                  "  ~" +
                     formatTime(
                       findArrival(train.timeTableRows).liveEstimateTime
                     )
                 }}
               </span>
+               </ion-col>
+                
+              </ion-row>
+              </ion-grid>
+
             </router-link>
           </template>
         </div>
@@ -380,13 +435,26 @@ a {
   font-weight: bold;
   padding: 6px;
 }
+
 .train-live-schedule {
   color: var(--ion-color-danger);
+}
+
+ion-col{
+ 
+  --ion-grid-columns:24;
+  color: var(--ion-color-light);
   font-size: 16px;
   font-weight: bold;
-  padding: 6px;
+  text-align: center;
+  background-color: rgb(28, 44, 88);
+  
 }
 ion-chip > ion-label {
   padding: 5px;
 }
+ion-grid{
+  padding: 1px;
+}
+
 </style>

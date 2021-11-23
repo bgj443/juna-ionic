@@ -30,7 +30,6 @@
 <script>
 import getComposition from "../services/getComposition";
 import Icon from "./Icon.vue";
-
 export default {
   props: ["date", "trainNumber"],
   components: { Icon },
@@ -39,7 +38,6 @@ export default {
       composition: {},
     };
   },
-
   methods: {
     //finds train information with url values
     //date syntax: YYYY-MM-DD
@@ -49,7 +47,6 @@ export default {
       );
     },
   },
-
   //watches value trainNumber for changes
   watch: {
     trainNumber: function(newval) {

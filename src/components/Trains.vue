@@ -79,7 +79,7 @@
           </ion-row>
         </ion-grid>
         <div
-          class="departure-table"
+          class="departure-table table-row"
           v-for="(train, i) in trains"
           v-bind:key="i"
         >
@@ -407,15 +407,33 @@ a {
 }
 .train-type {
   display: inline-block;
-  border-radius: 50%;
+  border-radius: 50px;
   min-width: 30px;
   height: 30px;
   background: var(--ion-color-dark);
   color: var(--ion-color-light);
   font-size: 16px;
-  line-height: 30px;
+  line-height: 20px;
   text-align: center;
-  padding: 3px 3px;
+  padding: 6px 8px;
+}
+.train-destination {
+  color: var(--ion-color-dark);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px;
+}
+.train-track {
+  color: var(--ion-color-dark);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px;
+}
+.train-schedule {
+  color: var(--ion-color-dark);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px;
 }
 
 .train-live-schedule {

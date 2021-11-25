@@ -472,13 +472,19 @@ a {
 
 ion-col {
   --ion-grid-columns: 24;
-  color: var(--ion-color-light);
+  color: var(--ion-color-dark);
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  background-color: rgb(28, 44, 88);
+  background: gainsboro;
 }
-ion-chip > ion-label {
+<!----ion-grid-columns: 24;
+color: var(--ion-color-light);
+font-size: 16px;
+font-weight: bold;
+text-align: center;
+background: rgb(28, 44, 88);
+-- > ion-chip > ion-label {
   padding: 5px;
 }
 ion-grid {

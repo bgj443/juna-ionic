@@ -459,25 +459,23 @@ a {
   font-weight: bold;
   padding: 6px;
 }
-
 .train-live-schedule {
   color: var(--ion-color-danger);
 }
-
 .train-category-filter {
   padding: 6px;
   display: block;
   text-align: center;
 }
-
 ion-col {
   --ion-grid-columns: 24;
-  color: var(--ion-color-light);
+  color: var(--ion-color-dark);
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  background-color: rgb(28, 44, 88);
+  background: gainsboro;
 }
+
 ion-chip > ion-label {
   padding: 5px;
 }

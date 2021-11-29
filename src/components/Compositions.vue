@@ -7,8 +7,7 @@
         :key="i"
         class="wagon-info"
       >
-        <!-- <div>Vaunutyyppi: {{ wagon.wagonType }}</div> -->
-        <div class="train-style">{{ wagon.location }}</div>
+        <div class="train-style">{{ wagon.salesNumber }}</div>
         <div class="wagon-type">
           <Icon name="catering" label="Ravintolavaunu" v-if="wagon.catering" />
           <Icon

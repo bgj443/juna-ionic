@@ -102,17 +102,14 @@ The [Node.js](https://nodejs.org/en/download/) download page has prebuilt instal
 
 The user can select a station from the search bar.
 
-![](src/images/juna-ionic_screen_search.PNG)
-&nbsp;&nbsp;&nbsp;&nbsp;
+<kbd> <img src="https://github.com/bgj443/juna-ionic/blob/Mirka/src/images/juna-ionic_screen_search.PNG?raw=true" width="350">
 
 The user can inspect arriving and departing trains separately and filter by commuter or long-distance trains.
 
-![](src/images/juna-ionic_screen_Tikkurila.PNG)
-&nbsp;&nbsp;&nbsp;&nbsp;
+<kbd> <img src="https://github.com/bgj443/juna-ionic/blob/Mirka/src/images/juna-ionic_screen_Tikkurila.PNG?raw=true" width="350">
 
 The user can select a train to check its composition.
-&nbsp;&nbsp;&nbsp;&nbsp;
-![](src/images/juna-ionic_screen_compositions.PNG)
+<kbd> <img src="https://github.com/bgj443/juna-ionic/blob/Mirka/src/images/juna-ionic_screen_compositions.PNG?raw=true" width="350">
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

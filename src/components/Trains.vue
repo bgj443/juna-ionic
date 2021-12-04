@@ -138,12 +138,6 @@
                       {{ findDeparture(train.timeTableRows).commercialTrack }}
                     </span>
                   </ion-col>
-                  <!-- <ion-col size="2">
-               <span class="train-schedule">
-                {{
-                  formatDate(findDeparture(train.timeTableRows).scheduledTime)
-                }}
-              </span> -->
                   <ion-col size="8">
                     <span
                       class="train-schedule"
@@ -474,6 +468,7 @@ ion-col {
   font-weight: bold;
   text-align: center;
   background: gainsboro;
+  
 }
 
 ion-chip > ion-label {

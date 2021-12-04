@@ -109,6 +109,7 @@ The user can inspect arriving and departing trains separately and filter by comm
 <kbd> <img src="https://github.com/bgj443/juna-ionic/blob/Mirka/src/images/juna-ionic_screen_Tikkurila.PNG?raw=true" width="350">
 
 The user can select a train to check its composition.
+
 <kbd> <img src="https://github.com/bgj443/juna-ionic/blob/Mirka/src/images/juna-ionic_screen_compositions.PNG?raw=true" width="350">
 
 <p align="right">(<a href="#top">back to top</a>)</p>

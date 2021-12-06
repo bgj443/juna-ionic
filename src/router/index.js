@@ -21,6 +21,7 @@ const routes = [
       },
       {
         path: "tab2",
+        name: "Junat",
         component: () => import("@/views/Tab2.vue"),
       },
       {

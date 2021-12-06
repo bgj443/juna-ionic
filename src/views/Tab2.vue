@@ -13,12 +13,12 @@
       </ion-header>
 
       <ion-content class="ion-padding">
-        <Trains />
+        <Trains :pageLoad="trigger" />
       </ion-content>
     </ion-content>
   </ion-page>
 </template>
-
+ 
 <script>
 import {
   IonPage,
@@ -27,9 +27,10 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/vue";
+import { defineComponent } from 'vue';
 import Trains from "@/components/Trains.vue";
 
-export default {
+export default defineComponent({
   name: "Tab2",
   components: {
     Trains,
@@ -39,5 +40,14 @@ export default {
     IonContent,
     IonPage,
   },
-};
+  data() {
+    return {
+      trigger: 0,
+    };
+  },
+  // update tab when opened
+  ionViewDidEnter() {
+      this.trigger++;
+  },
+});
 </script>

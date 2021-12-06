@@ -1,5 +1,6 @@
 <template>
   <ion-tabs>
+    <ion-router-outlet></ion-router-outlet>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="schedule" href="/tabs/Tab1">
         <ion-icon :icon="calendar"></ion-icon>
@@ -26,6 +27,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonRouterOutlet
 } from "@ionic/vue";
 import {
   calendar,
@@ -42,9 +44,10 @@ export default defineComponent({
     IonTabBar,
     IonTabButton,
     IonTabs,
+    IonRouterOutlet,
   },
   setup() {
-    return { calendar, informationCircle, map, cogOutline, train };
+    return { calendar, informationCircle, map, cogOutline, train};
   },
 });
 </script>

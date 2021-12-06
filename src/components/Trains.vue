@@ -61,7 +61,14 @@
         <ion-label>Kaukojunat</ion-label>
       </ion-chip>
     </span>
-    <template v-if="trains.length">
+    <ion-grid v-if="departureStation && searchWord" fixed>
+      <ion-row>
+        <ion-toolbar>
+          <ion-title>{{searchWord}}</ion-title>
+        </ion-toolbar>
+      </ion-row>
+    </ion-grid>
+    <template v-if="trains.length && departureStation && searchWord">
       <!--Lähtevät-->
 
       <div v-if="showTables.includes('departures')">
@@ -310,6 +317,11 @@ import {
   IonList,
   IonItem,
   IonChip,
+  IonTitle,
+  IonToolbar,
+  IonRow,
+  IonGrid,
+  IonCol
 } from "@ionic/vue";
 export default {
   components: {
@@ -320,6 +332,11 @@ export default {
     IonList,
     IonItem,
     IonChip,
+    IonTitle,
+    IonToolbar,
+    IonRow,
+    IonGrid,
+    IonCol
   },
   data() {
     return {
@@ -334,6 +351,7 @@ export default {
       searchWord: "",
     };
   },
+  props: ['pageLoad'],
   methods: {
     refreshTrains() {
       if (this.departureStation) {
@@ -397,7 +415,8 @@ export default {
         : (this.showTables = ["departures"]);
     },
     updateSearch(event) {
-      let items = Array.from(document.querySelector("ion-list").children);
+      if(!this.showStationList) return;
+      let items = Array.from(document.querySelector('ion-list').children);
       let query = event.target.value.toLowerCase();
       requestAnimationFrame(() => {
         items.forEach((item) => {
@@ -409,7 +428,7 @@ export default {
     updateFilter(value) {
       this.trainCategories.includes(value)
         ? (this.trainCategories = this.trainCategories.filter(
-            (e) => e !== value
+            (el) => el !== value
           ))
         : this.trainCategories.push(value);
     },
@@ -421,10 +440,22 @@ export default {
         : (passed = false);
       return passed;
     },
+    readParams() {
+      if(this.$route.params.closestStation)
+        this.departureStation = this.$route.params.closestStation;
+      if(this.$route.params.searchWord)
+        this.searchWord = this.$route.params.searchWord;
+    }
   },
   mounted() {
     getStations().then((data) => (this.stations = data));
   },
+  watch: { 
+    pageLoad: function() {
+      this.readParams();
+      this.refreshTrains();
+    }
+  }
 };
 </script>
 
@@ -472,7 +503,7 @@ a {
 
 ion-col {
   --ion-grid-columns: 24;
-  color: var(--ion-color-light);
+  color: white;
   font-size: 16px;
   font-weight: bold;
   text-align: center;

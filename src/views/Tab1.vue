@@ -12,6 +12,9 @@
         </ion-toolbar>
       </ion-header>
     </ion-content>
+    <ion-content class="ion-padding">
+      <Location />
+    </ion-content>
   </ion-page>
 </template>
 
@@ -23,10 +26,12 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/vue";
+import Location from "@/components/Location.vue";
 
 export default {
   name: "Tab1",
   components: {
+    Location,
     IonHeader,
     IonToolbar,
     IonTitle,

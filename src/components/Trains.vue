@@ -138,12 +138,6 @@
                       {{ findDeparture(train.timeTableRows).commercialTrack }}
                     </span>
                   </ion-col>
-                  <!-- <ion-col size="2">
-               <span class="train-schedule">
-                {{
-                  formatDate(findDeparture(train.timeTableRows).scheduledTime)
-                }}
-              </span> -->
                   <ion-col size="8">
                     <span
                       class="train-schedule"
@@ -459,17 +453,14 @@ a {
   font-weight: bold;
   padding: 6px;
 }
-
 .train-live-schedule {
   color: var(--ion-color-danger);
 }
-
 .train-category-filter {
   padding: 6px;
   display: block;
   text-align: center;
 }
-
 ion-col {
   --ion-grid-columns: 24;
   color: var(--ion-color-dark);
@@ -477,14 +468,10 @@ ion-col {
   font-weight: bold;
   text-align: center;
   background: gainsboro;
+  
 }
-<!----ion-grid-columns: 24;
-color: var(--ion-color-light);
-font-size: 16px;
-font-weight: bold;
-text-align: center;
-background: rgb(28, 44, 88);
--- > ion-chip > ion-label {
+
+ion-chip > ion-label {
   padding: 5px;
 }
 ion-grid {

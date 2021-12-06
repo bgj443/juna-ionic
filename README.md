@@ -85,13 +85,9 @@ The [Node.js](https://nodejs.org/en/download/) download page has prebuilt instal
    ```sh
    npm install
    ```
-3. Install the Ionic CLI with npm:
+3. Compiles for development
    ```sh
-   npm install -g @ionic/cli
-   ```
-4. Compiles for development
-   ```sh
-   ionic serve
+   npm run serve
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -137,10 +133,10 @@ Distributed under the [MIT](https://choosealicense.com/licenses/mit/) license.
 
 ## Contributors
 
-* [@Emmi Pallaspuro](https://github.com/emmi587)
-* [@Mirka Mäkinen](https://github.com/MMMirka)
-* [@Jesse Patana](https://github.com/bgj424)
-* [@Oskar Varis](https://github.com/bgj443)
+* [Emmi](https://github.com/emmi587)
+* [Mirka](https://github.com/MMMirka)
+* [Jesse](https://github.com/bgj424)
+* [Oskar](https://github.com/bgj443)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

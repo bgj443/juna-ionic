@@ -1,17 +1,16 @@
 <template>
   <template
     v-if="composition.journeySections && composition.journeySections.length"
-    ><div class="flex-container">
-      <div class="train-schedule">
-        Juna {{ composition.trainType }} {{ composition.trainNumber }}
+  >
+    <div class="train-schedule">
+      Juna {{ composition.trainType }} {{ composition.trainNumber }}
 
-        {{
-          composition.journeySections[0].beginTimeTableRow.stationShortCode
-        }}
-        -
+      {{ composition.journeySections[0].beginTimeTableRow.stationShortCode }}
+      -
 
-        {{ composition.journeySections[0].endTimeTableRow.stationShortCode }}
-      </div>
+      {{ composition.journeySections[0].endTimeTableRow.stationShortCode }}
+    </div>
+    <div class="flex-container">
       <div
         v-for="(wagon, i) in composition.journeySections[0].wagons"
         :key="i"

@@ -2,6 +2,16 @@
   <template
     v-if="composition.journeySections && composition.journeySections.length"
     ><div class="flex-container">
+      <div class="train-schedule">
+        Juna {{ composition.trainType }} {{ composition.trainNumber }}
+
+        {{
+          composition.journeySections[0].beginTimeTableRow.stationShortCode
+        }}
+        -
+
+        {{ composition.journeySections[0].endTimeTableRow.stationShortCode }}
+      </div>
       <div
         v-for="(wagon, i) in composition.journeySections[0].wagons"
         :key="i"
@@ -48,7 +58,7 @@ export default {
   },
   //watches value trainNumber for changes
   watch: {
-    trainNumber: function(newval) {
+    trainNumber: function (newval) {
       this.findComposition(this.date, newval);
     },
   },

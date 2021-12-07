@@ -64,7 +64,7 @@
     <ion-grid v-if="departureStation && searchWord" fixed>
       <ion-row>
         <ion-toolbar>
-          <ion-title>{{searchWord}}</ion-title>
+          <ion-title>{{ searchWord }}</ion-title>
         </ion-toolbar>
       </ion-row>
     </ion-grid>
@@ -96,10 +96,10 @@
           <template
             v-if="
               findDeparture(train.timeTableRows) &&
-                trainCategories.includes(train.trainCategory) &&
-                (findDeparture(train.timeTableRows).liveEstimateTime ??
-                  findDeparture(train.timeTableRows).scheduledTime) >=
-                  new Date().toISOString()
+              trainCategories.includes(train.trainCategory) &&
+              (findDeparture(train.timeTableRows).liveEstimateTime ??
+                findDeparture(train.timeTableRows).scheduledTime) >=
+                new Date().toISOString()
             "
           >
             <router-link
@@ -122,7 +122,7 @@
                       <span
                         v-if="
                           train.commuterLineID == 'P' ||
-                            train.commuterLineID == 'I'
+                          train.commuterLineID == 'I'
                         "
                       >
                         <span v-if="stationPassed(train.timeTableRows, 'LEN')"
@@ -163,19 +163,19 @@
                       class="train-live-schedule"
                       v-if="
                         findDeparture(train.timeTableRows).liveEstimateTime &&
+                        formatTime(
+                          findDeparture(train.timeTableRows).liveEstimateTime
+                        ) !=
                           formatTime(
-                            findDeparture(train.timeTableRows).liveEstimateTime
-                          ) !=
-                            formatTime(
-                              findDeparture(train.timeTableRows).scheduledTime
-                            )
+                            findDeparture(train.timeTableRows).scheduledTime
+                          )
                       "
                     >
                       {{
                         "  ~" +
-                          formatTime(
-                            findDeparture(train.timeTableRows).liveEstimateTime
-                          )
+                        formatTime(
+                          findDeparture(train.timeTableRows).liveEstimateTime
+                        )
                       }}
                     </span>
                   </ion-col>
@@ -208,7 +208,7 @@
           <template
             v-if="
               findArrival(train.timeTableRows) &&
-                trainCategories.includes(train.trainCategory)
+              trainCategories.includes(train.trainCategory)
             "
           >
             <router-link
@@ -231,7 +231,7 @@
                       <span
                         v-if="
                           train.commuterLineID == 'P' ||
-                            train.commuterLineID == 'I'
+                          train.commuterLineID == 'I'
                         "
                       >
                         <span v-if="stationPassed(train.timeTableRows, 'LEN')"
@@ -274,19 +274,19 @@
                       class="train-live-schedule"
                       v-if="
                         findArrival(train.timeTableRows).liveEstimateTime &&
+                        formatTime(
+                          findArrival(train.timeTableRows).liveEstimateTime
+                        ) !=
                           formatTime(
-                            findArrival(train.timeTableRows).liveEstimateTime
-                          ) !=
-                            formatTime(
-                              findArrival(train.timeTableRows).scheduledTime
-                            )
+                            findArrival(train.timeTableRows).scheduledTime
+                          )
                       "
                     >
                       {{
                         "  ~" +
-                          formatTime(
-                            findArrival(train.timeTableRows).liveEstimateTime
-                          )
+                        formatTime(
+                          findArrival(train.timeTableRows).liveEstimateTime
+                        )
                       }}
                     </span>
                   </ion-col>
@@ -315,7 +315,7 @@ import {
   IonToolbar,
   IonRow,
   IonGrid,
-  IonCol
+  IonCol,
 } from "@ionic/vue";
 export default {
   components: {
@@ -330,7 +330,7 @@ export default {
     IonToolbar,
     IonRow,
     IonGrid,
-    IonCol
+    IonCol,
   },
   data() {
     return {
@@ -345,7 +345,7 @@ export default {
       searchWord: "",
     };
   },
-  props: ['pageLoad'],
+  props: ["pageLoad"],
   methods: {
     refreshTrains() {
       if (this.departureStation) {
@@ -409,8 +409,8 @@ export default {
         : (this.showTables = ["departures"]);
     },
     updateSearch(event) {
-      if(!this.showStationList) return;
-      let items = Array.from(document.querySelector('ion-list').children);
+      if (!this.showStationList) return;
+      let items = Array.from(document.querySelector("ion-list").children);
       let query = event.target.value.toLowerCase();
       requestAnimationFrame(() => {
         items.forEach((item) => {
@@ -435,21 +435,21 @@ export default {
       return passed;
     },
     readParams() {
-      if(this.$route.params.closestStation)
+      if (this.$route.params.closestStation)
         this.departureStation = this.$route.params.closestStation;
-      if(this.$route.params.searchWord)
+      if (this.$route.params.searchWord)
         this.searchWord = this.$route.params.searchWord;
-    }
+    },
   },
   mounted() {
     getStations().then((data) => (this.stations = data));
   },
-  watch: { 
-    pageLoad: function() {
+  watch: {
+    pageLoad: function () {
       this.readParams();
       this.refreshTrains();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -494,12 +494,11 @@ a {
 }
 ion-col {
   --ion-grid-columns: 24;
-  color: white;
+  color: var(--ion-color-dark);
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  background: gainsboro;
-  
+  background: var(--timetable-bg);
 }
 
 ion-chip > ion-label {

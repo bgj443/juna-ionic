@@ -116,6 +116,7 @@ The user can select a train to check its composition.
 
 
 Project development is currently halted and further support discontinued.
+Pull requests are welcome!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
